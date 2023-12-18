@@ -30,6 +30,18 @@ class MediaLibrary:
         for _ in range(times):
             self.generate_views()
 
+    def top_titles(self, num_titles=5, content_type=None):
+        if content_type == 'movies':
+            sorted_media = sorted([media for media in self.media_list if isinstance(media, Movie)],
+                                  key=lambda x: x.play_count, reverse=True)
+        elif content_type == 'series':
+            sorted_media = sorted([media for media in self.media_list if isinstance(media, TVShow)],
+                                  key=lambda x: x.play_count, reverse=True)
+        else:
+            sorted_media = sorted(self.media_list, key=lambda x: x.play_count, reverse=True)
+
+        return sorted_media[:num_titles]
+
 
 class Movie:
     def __init__(self, title, release_year, genre):
@@ -66,8 +78,11 @@ if __name__ == "__main__":
 
     movie1 = Movie("Pulp Fiction", 1994, "Crime")
     movie2 = Movie("The Godfather", 1972, "Crime")
+    movie3 = Movie("Titanic", 1997, "Drama")
     tv_show1 = TVShow(1, 5, "The Simpsons", 1989, "Animation")
-    tv_show2 = TVShow(2, 10, "Breaking Bad", 2008, "Drama")
+    tv_show2 = TVShow(3, 4, "The Chosen", 2017, "Biblical")
+    tv_show3 = TVShow(2, 10, "Breaking Bad", 2008, "Drama")
+
 
     library.add_media(movie1)
     library.add_media(movie2)
@@ -83,3 +98,13 @@ if __name__ == "__main__":
 
     # Wyświetlamy zawartość biblioteki
     library.display_media()
+
+    # Wyświetlamy top filmy
+    print("\nTop Filmy:")
+    for top_movie in library.top_titles(num_titles=2, content_type='movies'):
+        print(top_movie)
+
+    # Wyświetlamy top seriale
+    print("\nTop Seriale:")
+    for top_series in library.top_titles(num_titles=2, content_type='series'):
+        print(top_series)
