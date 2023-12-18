@@ -41,18 +41,41 @@ class MediaLibrary:
         for media in self.media_list:
             print(media)
 
+    def get_movies(self):
+        movies = [media for media in self.media_list if isinstance(media, Movie)]
+        return sorted(movies, key=lambda x: x.title)
+
+    def get_series(self):
+        series = [media for media in self.media_list if isinstance(media, TVShow)]
+        return sorted(series, key=lambda x: x.title)
+
+
 if __name__ == "__main__":
     library = MediaLibrary()
 
-    movie = Movie("Pulp Fiction", 1994, "Crime")
-    tv_show = TVShow(1, 5, "The Simpsons", 1989, "Animation")
+    movie1 = Movie("Pulp Fiction", 1994, "Crime")
+    movie2 = Movie("The Godfather", 1972, "Crime") 
+    tv_show1 = TVShow(1, 5, "The Simpsons", 1989, "Animation")
+    tv_show2 = TVShow(3, 4, "The Chosen", 2017, "Biblican")
 
-    library.add_media(movie)
-    library.add_media(tv_show)
+    library.add_media(movie1)
+    library.add_media(movie2)
+    library.add_media(tv_show1)
+    library.add_media(tv_show2)
 
+    # Odtwarzamy tytuły
+    movie1.play()
+    tv_show1.play()
 
-    movie.play()
-    tv_show.play()
-
-
+    # Wyświetlamy zawartość biblioteki
     library.display_media()
+
+    # Wyświetlamy filmy
+    print("\nFilmy:")
+    for movie in library.get_movies():
+        print(movie)
+
+    # Wyświetlamy seriale
+    print("\nSeriale:")
+    for series in library.get_series():
+        print(series)
