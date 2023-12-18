@@ -1,3 +1,4 @@
+from datetime import datetime
 import random
 
 class MediaLibrary:
@@ -42,6 +43,18 @@ class MediaLibrary:
 
         return sorted_media[:num_titles]
 
+    def add_full_season(self, title, release_year, genre, season_number, num_episodes):
+        for episode_number in range(1, num_episodes + 1):
+            tv_show = TVShow(season_number, episode_number, title, release_year, genre)
+            self.add_media(tv_show)
+
+    def display_episode_count(self, title):
+        tv_shows = [media for media in self.media_list if isinstance(media, TVShow) and media.title.lower() == title.lower()]
+        if tv_shows:
+            total_episodes = sum(tv_show.episode for tv_show in tv_shows)
+            print(f"Liczba odcinków serialu '{title}': {total_episodes}")
+        else:
+            print(f"Nie znaleziono serialu o tytule '{title}'.")
 
 class Movie:
     def __init__(self, title, release_year, genre):
@@ -55,7 +68,6 @@ class Movie:
 
     def __str__(self):
         return f"{self.title} ({self.release_year}) - {self.play_count} views"
-
 
 class TVShow:
     def __init__(self, season, episode, title, release_year, genre):
@@ -72,7 +84,6 @@ class TVShow:
     def __str__(self):
         return f"{self.title} S{self.season:02d}E{self.episode:02d} ({self.release_year}) - {self.play_count} views"
 
-
 if __name__ == "__main__":
     library = MediaLibrary()
 
@@ -82,7 +93,6 @@ if __name__ == "__main__":
     tv_show1 = TVShow(1, 5, "The Simpsons", 1989, "Animation")
     tv_show2 = TVShow(3, 4, "The Chosen", 2017, "Biblical")
     tv_show3 = TVShow(2, 10, "Breaking Bad", 2008, "Drama")
-
 
     library.add_media(movie1)
     library.add_media(movie2)
@@ -108,3 +118,11 @@ if __name__ == "__main__":
     print("\nTop Seriale:")
     for top_series in library.top_titles(num_titles=2, content_type='series'):
         print(top_series)
+
+    # Dodajemy pełne sezony seriali
+    library.add_full_season("The Chosen", 2017, "Biblical", 3, 6)
+    library.add_full_season("Breaking Bad", 2008, "Drama", 2, 13)
+
+    # Wyświetlamy liczbę odcinków serialu
+    library.display_episode_count("The Chosen")
+    library.display_episode_count("Breaking Bad")
